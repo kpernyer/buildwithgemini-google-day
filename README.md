@@ -2,197 +2,187 @@
 
 <img src="assets/build-with-gemini-banner.png" alt="Build with Gemini" width="100%" />
 
-# 🚀 Build with Gemini · Track 3
+# ✦ Nexus Ops — Declarative Goal-Driven Support Agent
 
-### The starter kit for Track 3 of the Build with Gemini World Tour, and a showcase of what participants built with it.
+### Tell what needs to be true. The agent orchestrates the rest.
 
-Clone this repo, open [Antigravity](https://antigravity.google), and build your own agent-first app on Google Cloud. Every project in the [gallery below](#-featured-projects) was built the same way: prototyped with Antigravity and `agents-cli`, equipped with Memory, tools, and storage, deployed to Agent Platform, and given a face on Cloud Run.
+Built for **Build with Gemini · Track 3 (Agent-First Apps)** using **Google ADK**, **Gemini 2.5 Flash on Vertex AI**, **Multi-Tenant Memory Isolation**, and a **2-Sided Svelte 5 Operational UI**.
 
 <br/>
 
 ![Build with Gemini](https://img.shields.io/badge/Build%20with%20Gemini-World%20Tour-4285F4?logo=google&logoColor=white)
 ![Track 3](https://img.shields.io/badge/Track%203-Agent--First%20Apps-EA4335)
 ![Google Cloud](https://img.shields.io/badge/Google%20Cloud-Agent%20Platform-4285F4?logo=googlecloud&logoColor=white)
-![Built with ADK](https://img.shields.io/badge/Built%20with-ADK%20%2B%20agents--cli-34A853)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)
-![Projects](https://img.shields.io/badge/Projects-8-blue)
-
-<sub>📖 <a href="https://cszhu.github.io/build-with-gemini/">Lab Guide</a> · 🛠️ <a href="https://google.github.io/agents-cli/guide/getting-started/">agents-cli</a> · 🤖 <a href="https://google.github.io/adk-docs/">ADK</a></sub>
+![Built with ADK](https://img.shields.io/badge/Built%20with-Google%20ADK%20%2B%20agents--cli-34A853)
+![Frontend](https://img.shields.io/badge/Frontend-Svelte%205%20%2B%20Vite-FF3E00?logo=svelte&logoColor=white)
 
 </div>
 
 ---
 
-## 📚 Table of Contents
+## 💡 Overview
 
-- [🧩 Anatomy of a Track 3 Project](#-anatomy-of-a-track-3-project)
-- [📂 Featured Projects](#-featured-projects)
-  - [🛍️ Commerce & Marketplace Agents](#️-commerce--marketplace-agents)
-  - [🍳 Food & Recipe Agents](#-food--recipe-agents)
-  - [✈️ Travel & Local Agents](#️-travel--local-agents)
-  - [💪 Health, Fitness & Wellness Agents](#-health-fitness--wellness-agents)
-  - [📚 Learning & Knowledge Agents](#-learning--knowledge-agents)
-  - [🎨 Creative & Media Agents](#-creative--media-agents)
-  - [🏢 Productivity & Enterprise Agents](#-productivity--enterprise-agents)
-  - [🧪 Experimental & Other](#-experimental--other)
-- [🧠 What's in this Repo](#-whats-in-this-repo)
-- [🧰 Build Your Own](#-build-your-own)
-- [📚 Resources](#-resources)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+Traditional customer support bots follow rigid, brittle decision trees (*"If user says X, ask Y, then paste a link to a form"*). For lean engineering teams, that creates high customer friction and still leaves humans doing the administrative heavy lifting.
+
+**Nexus Ops** replaces procedural scripts with **declarative goals** and **hard invariants**:
+- **Desired Goal States**: What must become true for the customer's issue to be resolved (`customer_context_recognized`, `answer_grounded`, `customer_sentiment_checked`, `escalation_ready`).
+- **Hard Invariants**: Rules the agent may never break — strict multi-tenant memory isolation, zero unverified technical claims, zero duplicate Linear bug tickets, and conflict-free calendar scheduling.
 
 ---
 
-## 🧩 Anatomy of a Track 3 Project
+## 🖥️ Two-Sided Operational Experience
 
-Every app in this collection is built from the same set of Google Cloud building blocks introduced in the lab. Once you understand this shape, you can read any project here at a glance:
+The application features two distinct operational surfaces in [`frontend/src/App.svelte`](frontend/src/App.svelte):
 
-| Layer | What it does | Powered by |
-|---|---|---|
-| 🤖 **The Agent** | The core reasoning loop | [ADK](https://google.github.io/adk-docs/) + [`agents-cli`](https://google.github.io/agents-cli/guide/getting-started/), scaffolded with [Antigravity](https://antigravity.google) |
-| 🧠 **Memory** | Remembers facts across sessions | [Agent Platform Memory Bank](https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/memory-bank) |
-| 🗄️ **Structured data** | Inventory, records, lists | [Firestore](https://console.cloud.google.com/firestore) |
-| 🖼️ **Files & blobs** | Images, media, assets | [Cloud Storage](https://console.cloud.google.com/storage) |
-| 🔧 **Tools** | Take real actions and fetch real data | ADK function tools |
-| 🎨 **Media generation** | Creates images (and video) on demand | `gemini-3.1-flash-lite-image` (Nano Banana 2 Lite) · Omni (video) |
-| 🧪 **Code sandbox** | Safely runs generated code | Agent Platform code execution |
-| 🪟 **Agent-first UI** | Cards and tables instead of plain text | [A2UI](https://adk.dev/integrations/a2ui/) |
-| 🌐 **Frontend** | A shareable web face | FastAPI proxy on [Cloud Run](https://cloud.google.com/run) |
+### 1. Surface 1: Customer Product Portal ("Nexus Cloud Platform" + Intercom Drawer)
+Simulates a live B2B cloud console where customers monitor their API & webhook ingestion streams and open an embedded **Intercom-style autonomous support drawer**:
+- **Multi-Tenant Organization Switcher**: Instantly switch between three pre-seeded enterprise tenants to test strict tenant scoping (`tenant_id:user_id`):
+  - **Kenneth Pernyer** — CTO @ *Acme Logistics Corp* (`org_acme:kenneth`, Enterprise ERP)
+  - **Erik Lindqvist** — CSO @ *FinPulse Banking* (`org_fintech:erik`, EU Sovereign Compliance in `europe-north1`)
+  - **Maya Patel** — Head of Engineering @ *ShopEase Global* (`org_retail:maya`, 10x Black Friday Peak Load)
+- **Live Pipeline Incident Triggers**: Trigger realistic 500 Server Error webhook payload incidents (`evt_9921_erp`, 5.2 MB payload) directly from the event stream table.
+- **Inline Interactive Escalation Cards**: When an issue requires engineering escalation, the agent searches and files a tracked **Linear** ticket, queries open **Google Calendar** slots, and renders an interactive 1-click booking card inside the chat drawer that generates a confirmed Google Meet link.
 
----
-
-## 📂 Featured Projects
-
-A showcase of what workshop participants built with this lab. Entries are added here from the swag and gallery submission form after each event, so the categories below start empty and fill in over time. Browse them for inspiration, or [submit your own](#-contributing) once you've published your project with the `publish-to-github` skill.
-
-<!--
-Add one entry per project, in this format:
-- 🌿 **[Project Name](https://github.com/their-handle/their-repo)**: one-line description of what it does. <br/> <sub>by [@handle](https://github.com/handle)</sub>
-
-Bump the "Projects" badge count at the top when you add one.
--->
-
-### 🛍️ Commerce & Marketplace Agents
-
-### 🍳 Food & Recipe Agents
-
-- 🥫 **[Smart Pantry Recipe Concierge](https://github.com/matthewrose/buildwithgemini-smart-pantry-recipe-concierge)**: Tracks your pantry and recommends recipes grounded in a real recipe corpus. <br/> <sub>by [@matthewrose](https://github.com/matthewrose)</sub>
-
-### ✈️ Travel & Local Agents
-
-- ⛈️ **[SafeStageWX](https://github.com/felix1028/buildwithgemini-safestagewx)**: An agentic mobile app that helps event planners identify weather threats and climate risks for an event given its date and location, providing tailored preparedness timelines from months out down to hourly day-of forecasts. <br/> <sub>by [@felix1028](https://github.com/felix1028)</sub>
-- 🌇 **[Sidewalk & Sun](https://github.com/OlafHaalstra/buildwithgemini-sidewalk-and-sun)**: Recommends sunny or shaded NYC spots from a curated 500-venue corpus, plotted on an interactive map. <br/> <sub>by [@OlafHaalstra](https://github.com/OlafHaalstra)</sub>
-
-### 💪 Health, Fitness & Wellness Agents
-
-- 🏊 **[TriCoach AI](https://github.com/common-aman/buildwithgemini-tricoach-ai)**: A triathlon coach that logs workouts, computes training zones, and generates motivational visuals. <br/> <sub>by [@common-aman](https://github.com/common-aman)</sub>
-
-### 📚 Learning & Knowledge Agents
-
-- 🎤 **[Interview Coach (PrepPal)](https://github.com/VineethBaradi/buildwithgemini-interview-coach)**: A mock-interview coach that runs LLM-driven practice sessions from a Firestore question bank and gives performance feedback. <br/> <sub>by [@VineethBaradi](https://github.com/VineethBaradi)</sub>
-
-### 🎨 Creative & Media Agents
-
-### 🏢 Productivity & Enterprise Agents
-
-- 🔧 **[GitCraft](https://github.com/fpobletemu/buildwithgemini-gitcraft)**: A developer git assistant that inspects your repo and drafts Conventional-Commits-style messages, grounded in a commit-style guide. <br/> <sub>by [@fpobletemu](https://github.com/fpobletemu)</sub>
-- 🖥️ **[IT Helpdesk Agent](https://github.com/NaweedAhmadi/buildwithgemini-it-helpdesk-agent)**: An IT support assistant that answers from a knowledge base and remembers context across sessions, with a ticket dashboard UI. <br/> <sub>by [@NaweedAhmadi](https://github.com/NaweedAhmadi)</sub>
-
-### 🧪 Experimental & Other
-
-- 🃏 **[Poker Agent](https://github.com/jakecho1108/buildwithgemini-poker-agent)**: A poker trainer with a real 800-iteration Monte Carlo equity engine and strategy tips grounded in a poker playbook. <br/> <sub>by [@jakecho1108](https://github.com/jakecho1108)</sub>
+### 2. Surface 2: Founder Control Plane ("Tell What Needs to Be True")
+A Macaly-inspired policy studio where founders and support leads describe support scenarios in plain English and compile them into ADK goals and invariants without writing decision trees.
 
 ---
 
-## 🧠 What's in this Repo
+## 🏗️ System Architecture
 
-The `.agents/` folder teaches Antigravity how to build agents on Google Cloud.
+```mermaid
+flowchart TD
+    subgraph Frontend ["Svelte 5 Two-Sided UI (frontend/)"]
+        Portal["1. Customer App\n(Nexus Cloud Console + Intercom Widget)"]
+        Control["2. Founder Control Plane\n(Scenario & Invariant Synthesizer)"]
+    end
 
-### Skills
+    subgraph Backend ["FastAPI + Google ADK Runtime (backend/)"]
+        API["FastAPI Server & A2A Adapter\n(/api/chat, /api/state, /api/book)"]
+        Agent["Root ADK Agent (gemini-2.5-flash)\nDeclarative Goals & Invariant Instructions"]
+    end
 
-A **skill** is a bundle of instructions that loads automatically when it's relevant, so the agent gets the workflow right in fewer steps instead of rediscovering it each time.
+    subgraph Tools ["ADK Function Tools & Scoped State"]
+        Mem["get_customer_profile\n(Multi-Tenant Memory Store\nscoped by tenant_id:user_id)"]
+        Exa["exa_research\n(Live Exa API + Verified Docs Fallback)"]
+        Lin["search_linear_issues &\ncreate_linear_ticket\n(Deduplicated Issue Tracking)"]
+        Cal["get_available_calendar_slots &\nconfirm_booking\n(Conflict-Free Calendar Holds)"]
+    end
 
-| Skill | What it does |
-| --- | --- |
-| [`pick-your-agent-project`](.agents/skills/pick-your-agent-project/SKILL.md) | Brainstorm your app idea and write a project brief |
-| [`troubleshoot-lab-setup`](.agents/skills/troubleshoot-lab-setup/SKILL.md) | Verify your environment and fix common setup errors |
-| [`memory-bank-setup`](.agents/skills/setup-memory-bank/SKILL.md) | Add cross-session memory to your agent with Vertex AI Memory Bank |
-| [`enable-a2ui`](.agents/skills/enable-a2ui/SKILL.md) | Make your agent reply with rich UI cards (A2UI) in the ADK dev UI |
-| [`build-agent-frontend`](.agents/skills/build-agent-frontend/SKILL.md) | Generate a FastAPI chat frontend and ship it to Cloud Run |
-| [`record-demo`](.agents/skills/record-demo/SKILL.md) | Record a branded demo video of your agent, with an optional AI soundtrack |
-| [`publish-to-github`](.agents/skills/publish-to-github/SKILL.md) | Publish your finished project to your own GitHub and submit it for swag |
-
-### Pre-configured tools (MCP)
-
-[`.agents/mcp_config.json`](.agents/mcp_config.json) wires up two [Model Context Protocol](https://modelcontextprotocol.io/) servers that authenticate with your gcloud credentials, so the agent can look things up instead of guessing:
-
-- **Firebase**: work directly with Firestore and other Firebase services
-- **Google Developer Knowledge**: grounded access to Google's official docs (Cloud, Firebase, ADK, Agent Platform)
-
-### Layout
-
-```text
-.agents/
-├── mcp_config.json    # Firebase + Developer Knowledge MCP servers
-├── rules/             # workspace rules (only deploy when asked)
-└── skills/            # the workshop skills listed above
+    Portal --> API
+    Control --> API
+    API --> Agent
+    Agent --> Mem
+    Agent --> Exa
+    Agent --> Lin
+    Agent --> Cal
 ```
 
 ---
 
-## 🧰 Build Your Own
+## 🔧 Agent Tools & Enforced Invariants
 
-The full, step-by-step walkthrough lives on the **[lab guide](https://cszhu.github.io/build-with-gemini/)**. This is the short version.
+Defined in [`backend/app/agent.py`](backend/app/agent.py), [`backend/app/support_tools.py`](backend/app/support_tools.py), and [`backend/app/memory_store.py`](backend/app/memory_store.py):
 
-**Prerequisites** (the lab workstation comes with all of this pre-installed; you'll need it if you're running on your own machine):
+| Tool | Purpose | Enforced Invariant |
+| :--- | :--- | :--- |
+| `get_customer_profile(tenant_id, user_id)` | Loads organization metadata, role, and long-term customer facts from the multi-tenant memory store. | **Invariant 1 (Strict Tenant Isolation)**: Keyed strictly by `f"{tenant_id}:{user_id}"`; never leaks data across organizations. |
+| `exa_research(topic_or_error)` | Queries the live Exa API (when `EXA_API_KEY` is set) or verified technical documentation for webhook, CORS, and auth specs. | **Invariant 2 (Grounded Answers)**: Never guess technical specs or SLAs; verify documentation before replying. |
+| `search_linear_issues(query)` | Searches tracked engineering issues in the Linear store (`LINEAR_ISSUES_DB`). | **Invariant 3 (No Duplicate Tickets)**: Always search existing issues before creating a new ticket. |
+| `create_linear_ticket(...)` | Opens a prioritized engineering bug (`ENG-xxx`) with reproduction context. | Skips creation and returns existing ticket ID if a matching title already exists. |
+| `get_available_calendar_slots(days_ahead)` | Returns open 15-minute technical deep-dive slots filtered against existing bookings (`BOOKINGS_DB`). | **Invariant 4 (Availability Integrity)**: Only offer verified conflict-free slots. |
+| `confirm_booking(...)` | Places a calendar hold for a selected `slot_id` and generates a Google Meet link. | Rejects double-booking if a `slot_id` has already been reserved. |
 
-- A **Google Cloud project** with billing enabled
-- **[Antigravity](https://antigravity.google)** (`agy`), the coding agent that loads the skills above
-- **[agents-cli](https://google.github.io/agents-cli/guide/getting-started/)**, built on the [Agent Development Kit (ADK)](https://google.github.io/adk-docs/)
-- Authenticated gcloud: `gcloud auth login` and `gcloud auth application-default login`
-- A personal **GitHub account** for the final publish-and-submit step
+---
 
-**Quickstart:**
+## 📂 Project Structure
+
+```text
+.
+├── project_brief.md                 # Project summary & invariant overview
+├── backend/                         # Google ADK & FastAPI backend (scaffolded via agents-cli)
+│   ├── agents-cli-manifest.yaml     # ADK / Agent Runtime manifest (A2A enabled)
+│   ├── pyproject.toml               # Python dependencies (google-adk, a2a-sdk, fastapi)
+│   └── app/
+│       ├── agent.py                 # Root ADK Agent (gemini-2.5-flash), goals & invariants
+│       ├── support_tools.py         # Function tools (Exa, Linear, Calendar, Profile)
+│       ├── memory_store.py          # Multi-tenant organization & memory partition store
+│       ├── fast_api_app.py          # FastAPI REST endpoints (/api/chat, /api/state, /api/book) + A2A
+│       └── app_utils/               # A2A route adapters, Reasoning Engine adapter, telemetry
+└── frontend/                        # Svelte 5 + TypeScript + Vite web interface
+    ├── package.json
+    └── src/
+        ├── App.svelte               # Customer Portal + Intercom Drawer + Founder Control Plane
+        └── app.css                  # Styling
+```
+
+---
+
+## 🚀 Getting Started Locally
+
+### Prerequisites
+- **Python 3.11–3.13** and [`uv`](https://docs.astral.sh/uv/)
+- **Node.js 18+** and `npm`
+- A **Google Cloud project** with the Vertex AI API (`aiplatform.googleapis.com`) enabled and Application Default Credentials configured:
+  ```bash
+  gcloud auth login
+  gcloud auth application-default login
+  ```
+
+### 1. Start the ADK Backend (Port `8000`)
 
 ```bash
-git clone https://github.com/cszhu/build-with-gemini
-cd build-with-gemini
-agy
+cd backend
+
+# Copy and configure your environment variables
+cp .env.example .env
+# Edit .env to set GOOGLE_CLOUD_PROJECT=<your-gcp-project-id>
+# Optional: set EXA_API_KEY=<your-exa-api-key> for live Exa web search
+
+# Install dependencies and start the FastAPI + ADK server
+uv sync
+uv run uvicorn app.fast_api_app:app --reload --port 8000
 ```
 
-On startup, Antigravity scans the `.agents/` folder and loads the skills and tools above automatically. In the AGY prompt:
+### 2. Start the Svelte 5 Frontend
 
-```text
-/skills            # see the installed skills
-/mcp               # confirm the firebase + google-developer-knowledge tools are connected
+In a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
-```text
-Verify my setup.   # runs the troubleshoot-lab-setup skill to check your environment
-```
-
-Then follow the [lab guide](https://cszhu.github.io/build-with-gemini/) to design, build, deploy, and share your agent, start to finish.
+Open the local URL printed by Vite in your browser.
 
 ---
 
-## 📚 Resources
+## 🧪 Demo Walkthrough
 
-- **[Lab guide](https://cszhu.github.io/build-with-gemini/)**: the step-by-step workshop
-- [Antigravity](https://antigravity.google)
-- [agents-cli](https://google.github.io/agents-cli/guide/getting-started/)
-- [Agent Development Kit (ADK)](https://google.github.io/adk-docs/)
-- [Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform)
+1. **Test Grounded Troubleshooting & Tenant Context**:
+   - In **1. Customer App (Nexus Cloud + Intercom)**, verify you are logged in as **Kenneth Pernyer (Acme Logistics Corp)**.
+   - Click **"Ask Support (Intercom) ↗"** on the active pipeline alert banner.
+   - Watch the agent load Kenneth's `org_acme:kenneth` profile & memory context and run `exa_research` to suggest the `compression: gzip` and chunked-streaming workaround.
+2. **Trigger Autonomous Escalation (Linear + Calendar Hold)**:
+   - Click **"Report to Support"** on the failing `evt_9921_erp` (`500 Server Error`) row in the table (or tell the agent the workaround didn't resolve the issue and ask for a call).
+   - The agent runs `search_linear_issues` $\to$ `create_linear_ticket` $\to$ `get_available_calendar_slots`, replies with the tracked Linear issue ID, and renders an interactive **Technical Escalation Hold** card in the chat drawer.
+   - Select a time slot and click **"Confirm Google Meet"** to book the slot and generate a Meet link.
+3. **Verify Multi-Tenant Isolation**:
+   - Switch the active user chip in the top bar to **Erik Lindqvist (FinPulse Banking)** or **Maya Patel (ShopEase Global)** and ask about their environment—each tenant receives strictly isolated context.
+4. **Explore the Founder Control Plane**:
+   - Switch the top navigation toggle to **2. Founder Control Plane (Tell What Needs to Be True)** to synthesize new plain-English support policies into invariant cards.
 
 ---
 
-## 🤝 Contributing
+## 🗺️ Current Status & Roadmap
 
-**Built something?** Publish it with the `publish-to-github` skill and submit it through the form it gives you. Submissions get you swag, and standout projects get added to the [Featured Projects](#-featured-projects) gallery above.
-
-**Found a bug?** If you hit a rough edge in a skill or the lab, please [open an issue](https://github.com/cszhu/build-with-gemini/issues).
-
----
-
-## 📄 License
-
-This is not an officially supported Google product and is provided for the Build with Gemini workshop for demonstration purposes only.
+- **Implemented & Working**:
+  - Google ADK `root_agent` (`gemini-2.5-flash` on Vertex AI) with declarative goal/invariant system instructions.
+  - Multi-tenant memory store partitioned by `tenant_id:user_id` (`memory_store.py`).
+  - Function tools for customer profile lookup, Exa research (live API when `EXA_API_KEY` is provided + local documentation fallback), Linear issue search & deduplicated ticket creation (in-memory store), and conflict-free calendar slot lookup & booking (in-memory store).
+  - Full 2-sided Svelte 5 UI with tenant switching, live tool-call badges, interactive slot booking cards, and the Control Plane scenario synthesizer UI.
+- **Planned / Next Steps**:
+  - Connect `memory_store.py` to a managed **Vertex AI Memory Bank** instance for cloud-persisted cross-session memory extraction.
+  - Connect the Control Plane scenario synthesizer directly to a backend endpoint to dynamically hot-reload agent invariants at runtime.
+  - Wire Linear and Google Calendar tools to live OAuth / production APIs alongside Firestore persistence.
